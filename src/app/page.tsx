@@ -22,7 +22,7 @@ export default function Home() {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button size="lg"><Link href="/login" className="text-ws-accent-blue font-semibold hover:underline">Entrar</Link></Button>
+          <Button size="lg"><Link href="/login" className="text-ws-accent-white font-semibold hover:underline">Entrar</Link></Button>
           <Button variant="outline" size="lg" className="flex gap-2">
             <Activity className="w-5 h-5" />
             Ver Dashboard
