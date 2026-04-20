@@ -58,10 +58,12 @@ export default function Home() {
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button size="lg"><Link href="/login" className="text-ws-accent-white font-semibold hover:underline">Entrar</Link></Button>
-          <Button variant="outline" size="lg" className="flex gap-2">
-            <Activity className="w-5 h-5" />
-            Ver Dashboard
-          </Button>
+          <Link href="/dashboard">
+            <Button variant="outline" size="lg" className="flex gap-2 w-full sm:w-auto">
+              <Activity className="w-5 h-5" />
+              Ver Dashboard
+            </Button>
+          </Link>
         </div>
 
         <div className="pt-12 grid grid-cols-1 md:grid-cols-3 gap-4">

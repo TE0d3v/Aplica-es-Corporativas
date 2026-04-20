@@ -20,9 +20,15 @@ export default function LoginPage() {
 
     try {
       // Ajustado para os campos corretos da API (login, senha)
-      const response = await api.post("/login", { login: email, senha: password });
+      const response = await api.post<any>("/login", { login: email, senha: password });
+      
+      // Salva os dados do usuário para personalização (nome)
+      if (response && response.user) {
+        localStorage.setItem("@WattSense:user", JSON.stringify(response.user));
+      }
+
       console.log("Login realizado com sucesso:", response);
-      router.push("/"); // Redireciona para o dashboard
+      router.push("/dashboard"); // Redireciona para o dashboard completo
     } catch (err: any) {
       setError(err.message || "Erro ao realizar login");
     } finally {
