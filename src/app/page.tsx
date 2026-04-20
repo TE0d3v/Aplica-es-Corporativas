@@ -1,8 +1,43 @@
+"use client";
+
 import { Activity, Zap } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { api } from "@/lib/api";
+
+interface Stats {
+  label: string;
+  value: string;
+  color: string;
+}
 
 export default function Home() {
+  const [stats, setStats] = useState<Stats[]>([
+    { label: "Consumo Hoje", value: "0 kWh", color: "text-ws-accent-blue" },
+    { label: "Custo Estimado", value: "R$ 0,00", color: "text-ws-accent-amber" },
+    { label: "Economia", value: "0%", color: "text-ws-accent-green" },
+  ]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchStats() {
+      try {
+        // Exemplo de endpoint para estatísticas reais
+        const data = await api.get<Stats[]>("/stats");
+        if (data && Array.isArray(data)) {
+          setStats(data);
+        }
+      } catch (error) {
+        console.error("Erro ao buscar estatísticas:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchStats();
+  }, []);
+
   return (
     <main className="min-h-screen bg-ws-bg-primary flex flex-col items-center justify-center p-6 text-center">
       <div className="max-w-3xl space-y-8">
@@ -30,14 +65,12 @@ export default function Home() {
         </div>
 
         <div className="pt-12 grid grid-cols-1 md:grid-cols-3 gap-4">
-          {[
-            { label: "Consumo Hoje", value: "12.4 kWh", color: "text-ws-accent-blue" },
-            { label: "Custo Estimado", value: "R$ 42,50", color: "text-ws-accent-amber" },
-            { label: "Economia", value: "18%", color: "text-ws-accent-green" },
-          ].map((stat) => (
+          {stats.map((stat) => (
             <div key={stat.label} className="bg-ws-bg-card border border-white/5 p-6 rounded-2xl">
               <p className="text-sm text-ws-text-secondary mb-1">{stat.label}</p>
-              <p className={`text-2xl font-bold ${stat.color}`}>{stat.value}</p>
+              <p className={`text-2xl font-bold ${stat.color}`}>
+                {isLoading ? "..." : stat.value}
+              </p>
             </div>
           ))}
         </div>
@@ -45,3 +78,4 @@ export default function Home() {
     </main>
   );
 }
+
