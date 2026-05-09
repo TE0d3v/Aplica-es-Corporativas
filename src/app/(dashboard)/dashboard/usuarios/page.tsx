@@ -24,7 +24,7 @@ import { api } from "@/lib/api";
 import { cn } from "@/lib/utils";
 
 interface User {
-  id: string;
+  usuario_id: string;
   nome: string;
   login: string;
   senha?: string;
@@ -110,7 +110,7 @@ export default function UsuariosPage() {
     e.preventDefault();
     try {
       if (editingUser) {
-        await api.put(`/${editingUser.id}`, formData);
+        await api.put(`/${editingUser.usuario_id}`, formData);
         showNotification('success', "Usuário atualizado com sucesso!");
       } else {
         await api.post("/signup", formData);
@@ -127,8 +127,15 @@ export default function UsuariosPage() {
   const handleDelete = async () => {
     if (!userToDelete) return;
     
+    const userId = userToDelete.usuario_id;
+
+    if (!userId) {
+      showNotification('error', "ID do usuário não encontrado.");
+      return;
+    }
+
     try {
-      await api.delete(`/${userToDelete.id}`);
+      await api.delete(`/${userId}`);
       showNotification('success', "Usuário excluído com sucesso.");
       handleCloseDeleteModal();
       fetchUsuarios();
@@ -148,7 +155,7 @@ export default function UsuariosPage() {
       {/* Notificações */}
       {notification && (
         <div className={cn(
-          "fixed top-24 right-8 z-[100] flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl border animate-in slide-in-from-right-8 duration-300",
+          "fixed top-24 right-8 z-100 flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl border animate-in slide-in-from-right-8 duration-300",
           notification.type === 'success' ? "bg-ws-accent-green/10 border-ws-accent-green/20 text-ws-accent-green" : "bg-red-500/10 border-red-500/20 text-red-500"
         )}>
           {notification.type === 'success' ? <CheckCircle2 className="w-5 h-5" /> : <AlertCircle className="w-5 h-5" />}
@@ -186,7 +193,7 @@ export default function UsuariosPage() {
         <div className="overflow-x-auto">
           <table className="w-full text-left">
             <thead>
-              <tr className="border-b border-white/5 bg-white/[0.02]">
+              <tr className="border-b border-white/5 bg-white/2">
                 <th className="px-6 py-5 text-[10px] uppercase font-black text-ws-text-secondary tracking-[0.2em]">Identificação</th>
                 <th className="px-6 py-5 text-[10px] uppercase font-black text-ws-text-secondary tracking-[0.2em]">Acesso / Login</th>
                 <th className="px-6 py-5 text-[10px] uppercase font-black text-ws-text-secondary tracking-[0.2em]">Status</th>
@@ -214,10 +221,10 @@ export default function UsuariosPage() {
                 </tr>
               ) : (
                 filteredUsers.map((user) => (
-                  <tr key={user.id} className="hover:bg-white/[0.03] transition-all group">
+                  <tr key={user.usuario_id} className="hover:bg-white/3 transition-all group">
                     <td className="px-6 py-5">
                       <div className="flex items-center gap-4">
-                        <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-ws-accent-blue/20 to-ws-accent-blue/5 flex items-center justify-center text-ws-accent-blue border border-ws-accent-blue/20 group-hover:scale-110 transition-transform">
+                        <div className="h-12 w-12 rounded-2xl bg-linear-to-br from-ws-accent-blue/20 to-ws-accent-blue/5 flex items-center justify-center text-ws-accent-blue border border-ws-accent-blue/20 group-hover:scale-110 transition-transform">
                           <Users className="w-6 h-6" />
                         </div>
                         <div className="flex flex-col">
@@ -265,9 +272,9 @@ export default function UsuariosPage() {
 
       {/* Modal de Cadastro/Edição */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-in fade-in duration-300">
+        <div className="fixed inset-0 z-110 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-in fade-in duration-300">
           <div className="w-full max-w-lg bg-ws-bg-secondary border border-white/10 rounded-[2.5rem] shadow-[0_0_100px_rgba(0,170,255,0.1)] overflow-hidden animate-in zoom-in-95 duration-300">
-            <div className="px-10 py-8 border-b border-white/5 flex items-center justify-between bg-white/[0.02]">
+            <div className="px-10 py-8 border-b border-white/5 flex items-center justify-between bg-white/2">
               <div className="flex items-center gap-4">
                 <div className="p-3 bg-ws-accent-blue/10 rounded-2xl text-ws-accent-blue border border-ws-accent-blue/20">
                   {editingUser ? <Edit2 className="w-6 h-6" /> : <Plus className="w-6 h-6" />}
@@ -367,7 +374,7 @@ export default function UsuariosPage() {
 
       {/* Modal de Confirmação de Exclusão */}
       {isDeleteModalOpen && userToDelete && (
-        <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-in fade-in duration-300">
+        <div className="fixed inset-0 z-120 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-in fade-in duration-300">
           <div className="w-full max-w-md bg-ws-bg-secondary border border-red-500/20 rounded-[2.5rem] shadow-[0_0_100px_rgba(239,68,68,0.1)] overflow-hidden animate-in zoom-in-95 duration-300">
             <div className="p-10 text-center space-y-6">
               <div className="w-20 h-20 bg-red-500/10 rounded-3xl flex items-center justify-center text-red-500 border border-red-500/20 mx-auto mb-4">
