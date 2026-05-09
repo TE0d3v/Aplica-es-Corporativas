@@ -7,7 +7,9 @@ import {
   Settings, 
   LogOut, 
   User,
-  ShieldCheck
+  ShieldCheck,
+  FolderOpen,
+  Users
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -16,6 +18,14 @@ import { cn } from "@/lib/utils";
 const menuItems = [
   { icon: LayoutDashboard, label: "Visão Geral", href: "/dashboard" },
   { icon: Zap, label: "Circuitos", href: "/dashboard/circuitos" },
+  { 
+    label: "Cadastros", 
+    icon: FolderOpen,
+    href: "#",
+    subItems: [
+      { icon: Users, label: "Usuários", href: "/dashboard/usuarios" },
+    ]
+  },
   { icon: BarChart3, label: "Relatórios", href: "/dashboard/relatorios" },
   { icon: User, label: "Meu Perfil", href: "/dashboard/perfil" },
   { icon: ShieldCheck, label: "Administração", href: "/dashboard/admin" },
@@ -36,6 +46,38 @@ export function Sidebar() {
 
         <nav className="space-y-1.5">
           {menuItems.map((item) => {
+            if (item.subItems) {
+              return (
+                <div key={item.label} className="space-y-1">
+                  <div className="flex items-center gap-3 px-4 py-2 text-xs font-semibold text-ws-text-secondary uppercase tracking-wider mt-4 first:mt-0">
+                    <item.icon className="w-4 h-4" />
+                    {item.label}
+                  </div>
+                  {item.subItems.map((subItem) => {
+                    const isActive = pathname === subItem.href;
+                    return (
+                      <Link
+                        key={subItem.href}
+                        href={subItem.href}
+                        className={cn(
+                          "flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all group",
+                          isActive 
+                            ? "bg-ws-accent-blue/10 text-ws-accent-blue shadow-[inset_0_0_10px_rgba(0,170,255,0.1)]" 
+                            : "text-ws-text-secondary hover:text-ws-text-primary hover:bg-white/5"
+                        )}
+                      >
+                        <subItem.icon className={cn(
+                          "w-5 h-5 transition-colors",
+                          isActive ? "text-ws-accent-blue" : "text-ws-text-secondary group-hover:text-ws-text-primary"
+                        )} />
+                        {subItem.label}
+                      </Link>
+                    );
+                  })}
+                </div>
+              );
+            }
+
             const isActive = pathname === item.href;
             return (
               <Link
@@ -73,6 +115,7 @@ export function Sidebar() {
         <button
           onClick={() => {
             // Lógica de logout aqui futuramente
+            localStorage.removeItem("@WattSense:user");
             window.location.href = "/login";
           }}
           className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-red-400 hover:text-red-500 hover:bg-red-500/5 transition-all w-full text-left"
