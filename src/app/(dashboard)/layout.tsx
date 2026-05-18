@@ -17,7 +17,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           const nameParts = user.nome.trim().split(" ");
           setFirstName(nameParts[0]);
         }
-      } catch (e) {
+      } catch (_e) {
         console.error("Erro ao processar dados do usuário");
       }
     }

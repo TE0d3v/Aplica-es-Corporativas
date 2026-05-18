@@ -7,7 +7,6 @@ import {
   TrendingDown, 
   AlertCircle,
   Activity,
-  ArrowUpRight,
   Monitor
 } from "lucide-react";
 import { MetricCard } from "@/components/energy/MetricCard";
@@ -16,6 +15,7 @@ import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { api } from "@/lib/api";
+import { cn } from "@/lib/utils";
 
 interface Circuit {
   id: string;
@@ -156,8 +156,4 @@ export default function DashboardPage() {
       </div>
     </div>
   );
-}
-
-function cn(...inputs: any[]) {
-  return inputs.filter(Boolean).join(" ");
 }

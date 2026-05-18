@@ -8,10 +8,25 @@ export async function apiFetch<T>(endpoint: string, options: RequestInit = {}): 
 
   
   try {
+    // Busca o usuário no localStorage para obter o ID
+    let userId = "";
+    if (typeof window !== "undefined") {
+      const userJson = localStorage.getItem("@WattSense:user");
+      if (userJson) {
+        try {
+          const user = JSON.parse(userJson);
+          userId = user.usuario_id ? String(user.usuario_id) : "";
+        } catch (e) {
+          console.error("Erro ao parsear usuário do localStorage", e);
+        }
+      }
+    }
+
     const response = await fetch(url, {
       ...options,
       headers: {
         "Content-Type": "application/json",
+        "x-user-id": userId,
         ...options.headers,
       },
     });
@@ -26,7 +41,9 @@ export async function apiFetch<T>(endpoint: string, options: RequestInit = {}): 
     }
 
     if (!response.ok) {
-      const errorMessage = (typeof data === 'object' && data?.message) || data || `Erro ${response.status}: ${response.statusText}`;
+      const errorMessage = (typeof data === 'object' && (data?.message || data?.error)) || 
+                          (typeof data === 'string' ? data : JSON.stringify(data)) || 
+                          `Erro ${response.status}: ${response.statusText}`;
       throw new Error(errorMessage);
     }
 

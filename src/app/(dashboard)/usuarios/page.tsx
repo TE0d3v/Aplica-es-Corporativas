@@ -297,10 +297,11 @@ export default function UsuariosPage() {
             <form onSubmit={handleSubmit} className="p-10 space-y-8">
               <div className="grid grid-cols-1 gap-8">
                 <div className="space-y-3">
-                  <label className="text-[10px] font-black text-ws-text-secondary uppercase tracking-[0.2em] ml-1">Nome Completo</label>
+                  <label htmlFor="nome" className="text-[10px] font-black text-ws-text-secondary uppercase tracking-[0.2em] ml-1">Nome Completo</label>
                   <div className="relative">
                     <UserCheck className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-ws-text-secondary" />
                     <Input 
+                      id="nome"
                       required
                       placeholder="Nome do colaborador" 
                       className="pl-14 h-14 text-base"
@@ -311,10 +312,11 @@ export default function UsuariosPage() {
                 </div>
 
                 <div className="space-y-3">
-                  <label className="text-[10px] font-black text-ws-text-secondary uppercase tracking-[0.2em] ml-1">E-mail Corporativo (Login)</label>
+                  <label htmlFor="login" className="text-[10px] font-black text-ws-text-secondary uppercase tracking-[0.2em] ml-1">E-mail Corporativo (Login)</label>
                   <div className="relative">
                     <Shield className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-ws-text-secondary" />
                     <Input 
+                      id="login"
                       required
                       type="email"
                       placeholder="exemplo@wattsense.com" 
@@ -327,12 +329,13 @@ export default function UsuariosPage() {
 
                 <div className="space-y-3">
                   <div className="flex justify-between items-center px-1">
-                    <label className="text-[10px] font-black text-ws-text-secondary uppercase tracking-[0.2em]">Senha de Acesso</label>
+                    <label htmlFor="senha" className="text-[10px] font-black text-ws-text-secondary uppercase tracking-[0.2em]">Senha de Acesso</label>
                     {editingUser && <span className="text-[10px] text-ws-accent-blue font-bold uppercase tracking-widest">Opcional</span>}
                   </div>
                   <div className="relative">
                     <Key className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-ws-text-secondary" />
                     <Input 
+                      id="senha"
                       required={!editingUser}
                       type="password"
                       placeholder="••••••••••••" 
