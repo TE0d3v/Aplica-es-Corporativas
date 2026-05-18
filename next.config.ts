@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/api/:path*",
-        destination: "http://localhost:8800/:path*", // Redireciona para a API local
+        destination: "https://aplicacoes-corporativas.onrender.com/:path*", // Redireciona para a API local
       },
     ];
   },
