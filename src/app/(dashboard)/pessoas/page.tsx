@@ -63,7 +63,7 @@ export default function PessoasPage() {
       setFormData({
         nome: pessoa.nome,
         cpf: pessoa.cpf,
-        nascimento: dateValue,
+        nascimento: dateValue || "",
         telefone: pessoa.telefone,
         pessoa_tipo_id: pessoa.pessoa_tipo_id.toString()
       });
